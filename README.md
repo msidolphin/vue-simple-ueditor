@@ -1,6 +1,6 @@
-# vue-ueditor
+# vue-simple-ueditor
 
-> A Vue.js project
+> 基于百度Ueditor的Vue组件
 
 ## Build Setup
 
