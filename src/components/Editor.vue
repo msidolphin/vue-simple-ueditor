@@ -1,5 +1,5 @@
 <template>
-  <div ref="editor"></div>
+  <div ref="editor" class="vue-simple-ueditor"></div>
 </template>
 
 <script>
@@ -34,10 +34,16 @@ export default {
     }
   },
   watch: {
-    value () {
+    value (newVal, oldVal) {
+      let value = newVal ? newVal : oldVal
       if (this.__isReady() && !this.init) {
-        this.currentValue = this.value
-        this.setContent(this.currentValue)
+        this.currentValue = value
+        // 因为setContent会改变光标的位置，所以最早采用上面的方式，但是inserthtml有时会插入换行符
+        // this.setContent('', false)
+        // this.ue.execCommand('inserthtml', value)
+        // 更好的方式：只需要调用focus方法传入的toEnd为true即可解决这个问题
+        this.setContent(value, false)
+        this.setFocus()
         // 内容初始化完毕
         this.init = true
       }
@@ -46,6 +52,26 @@ export default {
   methods: {
     __isReady () {
       return this.ready
+    },
+    initEditor () {
+      if (typeof window.UE !== 'undefined') {
+        let UE = window.UE
+        this.currentValue = this.value
+        this.ue = UE.getEditor(this.$refs.editor, this.options)
+        this.ue.ready(() => {
+          this.ready = true
+          if (this.currentValue) {
+            this.setContent(this.currentValue)
+            this.init = true
+          }
+          if (this.focus) this.setFocus()
+          this.ue.addListener('contentChange', () => {
+            this.currentValue = this.ue.getContent()
+            this.$emit('input', this.currentValue)
+            this.$emit('change', this.currentValue)
+          })
+        })
+      }
     },
     /**
      * 获得内容
@@ -97,8 +123,8 @@ export default {
      * 使编辑器获得焦点
      * @method setFocus
      */
-    setFocus () {
-      if (this.__isReady()) this.ue.focus()
+    setFocus (toEnd = true) {
+      if (this.__isReady()) this.ue.focus(toEnd)
     },
     /**
      * 判断编辑器是否获得焦点
@@ -162,20 +188,7 @@ export default {
     }
   },
   mounted () {
-    if (typeof window.UE !== 'undefined') {
-      let UE = window.UE
-      this.currentValue = this.value
-      this.ue = UE.getEditor(this.$refs.editor, this.options)
-      this.ue.ready(() => {
-        this.ready = true
-        this.setContent(this.currentValue)
-        if (this.focus) this.focus()
-        this.ue.addListener('contentChange', () => {
-          this.currentValue = this.ue.getContent()
-          this.$emit('input', this.currentValue)
-        })
-      })
-    }
+    this.initEditor()
   }
 }
 </script>

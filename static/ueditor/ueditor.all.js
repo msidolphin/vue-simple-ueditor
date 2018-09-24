@@ -27264,8 +27264,11 @@ UE.ui = baidu.editor.ui = {};
             }
         },
         reset: function (){
-            this.getDom('content').innerHTML = this.getContentHtml();
-            this.fireEvent('dialogafterreset');
+            let dom = this.getDom('content');
+            if (dom) {
+                dom.innerHTML = this.getContentHtml();
+                this.fireEvent('dialogafterreset');
+            }
         },
         _show: function (){
             if (this._hidden) {
@@ -27732,7 +27735,8 @@ UE.ui = baidu.editor.ui = {};
             });
         },
         setContent: function(content){
-            this.getDom('content').innerHTML = content;
+            let dom = this.getDom('content')
+            if (dom) dom.innerHTML = content;
         },
         setType: function(type){
             type = type || 'info';
@@ -27747,7 +27751,8 @@ UE.ui = baidu.editor.ui = {};
             return arr ? arr[1]:'';
         },
         show: function (){
-            this.getDom().style.display = 'block';
+            let dom = this.getDom()
+            if (dom) dom.style.display = 'block';
         },
         hide: function (){
             var dom = this.getDom();
@@ -28773,10 +28778,10 @@ UE.ui = baidu.editor.ui = {};
                 }
                 var count = editor.getContentLength(true);
                 if (count > max) {
-                    countDom.innerHTML = errMsg;
+                    if (countDom) countDom.innerHTML = errMsg;
                     editor.fireEvent("wordcountoverflow");
                 } else {
-                    countDom.innerHTML = msg.replace("{#leave}", max - count).replace("{#count}", count);
+                    if (countDom) countDom.innerHTML = msg.replace("{#leave}", max - count).replace("{#count}", count);
                 }
             }
 
