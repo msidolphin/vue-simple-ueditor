@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <ueditor v-model="value"></ueditor>
+    <editor v-model="value"></editor>
   </div>
 </template>
 
@@ -32,6 +32,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width: 860px;
+  margin: 0 auto;
+  padding-bottom: 25px;
 }
 </style>

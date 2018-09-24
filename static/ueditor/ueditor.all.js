@@ -14290,7 +14290,6 @@ UE.plugins['undo'] = function () {
             clearTimeout(saveSceneTimer);
             var currentScene = this.getScene(notSetCursor),
                 lastScene = this.list[this.index];
-
             if(lastScene && lastScene.content != currentScene.content){
                 me.trigger('contentchange')
             }
@@ -14384,10 +14383,10 @@ UE.plugins['undo'] = function () {
     });
     var isCollapsed = true;
     me.addListener('keydown', function (type, evt) {
-
         var me = this;
         var keyCode = evt.keyCode || evt.which;
-        if (!keys[keyCode] && !evt.ctrlKey && !evt.metaKey && !evt.shiftKey && !evt.altKey) {
+        // todo 解决shift组合键不能触发contentchange的bug，删除了!evt.shiftKey，但是不确定是否有其他的问题
+        if (!keys[keyCode] && !evt.ctrlKey && !evt.metaKey && !evt.altKey) {
             if (inputType)
                 return;
 
@@ -15398,7 +15397,6 @@ UE.plugins['list'] = function () {
             domUtils.remove(tmpNode);
         }
     }
-
     me.addListener('keydown', function (type, evt) {
         function preventAndSave() {
             evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
