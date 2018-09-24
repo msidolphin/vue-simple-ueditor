@@ -20,7 +20,6 @@ export default {
   methods: {
     onContentChange (content) {
       console.log('编辑器内容：' + content)
-      this.value = content
     }
   },
   mounted () {
@@ -36,7 +35,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   width: 860px;
   margin: 0 auto;
