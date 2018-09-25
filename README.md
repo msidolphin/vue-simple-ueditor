@@ -4,13 +4,19 @@
 
 ## Install
 ```bash
-npm install vue-simple-ueditor
+npm install vue-simple-ueditor -S
 ```
 
 ## Usage
 
+
+> 下载官方资源文件或者复制dist目录下的ueditor到你的项目中
+
+> Download the official resource file or copy the ueditor in the dist directory to your project
+
 ### import
 ```js
+import 'vue-simple-ueditor/dist/css/vue-ueditor.css'
 import VueUEditor from 'vue-simple-ueditor'
 Vue.use(VueUEditor)
 ```
@@ -18,7 +24,7 @@ Vue.use(VueUEditor)
 ```vue
 <template>
   <div id="app">
-    <ueditor v-model="value" ref="ueditor" @change="onContentChange"></ueditor>
+    <ueditor v-model="value" ref="ueditor" :options="options" @change="onContentChange"></ueditor>
   </div>
 </template>
 
@@ -27,7 +33,10 @@ export default {
   name: 'App',
   data () {
     return {
-      value: ''
+      value: '',
+      options: {
+        UEDITOR_HOME_URL: '/static/ueditor/' // ueditor静态资源目录 默认为/static/ueditor/
+      }
     }
   },
   methods: {
