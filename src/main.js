@@ -2,8 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-// import VueUEditor from '../dist/vue-ueditor.min'
-// Vue.use(VueUEditor)
+import VueUEditor from '../dist/vue-ueditor.min'
+Vue.use(VueUEditor)
 
 Vue.config.productionTip = false
 

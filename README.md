@@ -1,6 +1,59 @@
 # vue-simple-ueditor
 
-> 基于百度Ueditor的Vue组件
+> 基于百度UEditor的Vue组件
+
+## Install
+```bash
+npm install vue-simple-ueditor
+```
+
+## Usage
+
+### import
+```js
+import VueUEditor from 'vue-simple-ueditor'
+Vue.use(VueUEditor)
+```
+### use
+```vue
+<template>
+  <div id="app">
+    <ueditor v-model="value" ref="ueditor" @change="onContentChange"></ueditor>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+  data () {
+    return {
+      value: ''
+    }
+  },
+  methods: {
+    onContentChange (content) {
+      console.log('content：' + content)
+    }
+  }
+}
+</script>
+```
+
+## Props
+
+| attribute | type | description |
+| ------ | ------ | ------ |
+| value | String | v-model |
+| options | Object | ueditor options   http://fex.baidu.com/ueditor/ |
+| focus | Boolean | focus the component |
+| disabled | Boolean | whether component is disabled |
+
+
+## Events
+
+| event | description | params |
+| ------ | ------ | ------ |
+| change | triggers when the value change | content |
 
 ## Build Setup
 
