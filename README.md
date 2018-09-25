@@ -10,9 +10,9 @@ npm install vue-simple-ueditor -S
 ## Usage
 
 
-> 下载官方资源文件或者复制dist目录下的ueditor到你的项目中
+> 复制dist目录下的ueditor到你的项目中（修改了部分源码）
 
-> Download the official resource file or copy the ueditor in the dist directory to your project
+> copy the ueditor in the dist directory to your project (Modified part of the source code)
 
 ### import
 ```js

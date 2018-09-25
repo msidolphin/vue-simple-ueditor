@@ -1,5 +1,7 @@
 <template>
-  <div ref="editor" class="vue-simple-ueditor"></div>
+  <div class="vue-simple-ueditor-wrapper">
+    <div ref="editor" id="vue-simple-ueditor"></div>
+  </div>
 </template>
 
 <script>
@@ -57,7 +59,8 @@ export default {
       if (typeof window.UE !== 'undefined') {
         let UE = window.UE
         this.currentValue = this.value
-        this.ue = UE.getEditor(this.$refs.editor, this.options)
+        UE.delEditor('vue-simple-ueditor', false)
+        this.ue = UE.getEditor('vue-simple-ueditor', this.options)
         this.ue.ready(() => {
           this.ready = true
           if (this.currentValue) {
