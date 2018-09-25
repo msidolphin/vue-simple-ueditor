@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <editor v-model="value" ref="ueditor" @change="onContentChange"></editor>
+    <editor v-model="value" ref="ueditor" @change="onContentChange"></editor>
   </div>
 </template>
 
@@ -24,7 +25,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.value = '<h1 style="font-size: 32px; font-weight: bold; border-bottom: 2px solid rgb(204, 204, 204); padding: 0px 4px 0px 0px; text-align: center; margin: 0px 0px 20px;">Hello UEditor</h1>'
+      this.value = 'Hello UEditor'
     }, 500)
   }
 }

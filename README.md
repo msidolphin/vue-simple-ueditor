@@ -56,6 +56,7 @@ export default {
 | options | Object | ueditor options   http://fex.baidu.com/ueditor/ |
 | focus | Boolean | focus the component |
 | disabled | Boolean | whether component is disabled |
+| once | Boolean | whether to initialize the content once |
 
 
 ## Events

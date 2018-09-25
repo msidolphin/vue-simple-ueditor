@@ -1,6 +1,6 @@
 <template>
   <div class="vue-simple-ueditor-wrapper">
-    <div ref="editor" id="vue-simple-ueditor"></div>
+    <div ref="editor" :id="id"></div>
   </div>
 </template>
 
@@ -25,30 +25,33 @@ export default {
       }
     },
     focus: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    once: { // 是否只初始化内容一次
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
-      currentValue: '',
       ue: null,
       ready: false,
-      init: false
+      init: false,
+      id: 'vue-simple-ueditor' + Math.ceil(Math.random() * 1000) + '-' + new Date().getTime()
     }
   },
   watch: {
-    value (newVal, oldVal) {
-      let value = newVal ? newVal : oldVal
-      if (this.__isReady() && !this.init) {
-        this.currentValue = value
-        // 因为setContent会改变光标的位置，所以最早采用上面的方式，但是inserthtml有时会插入换行符
-        // this.setContent('', false)
-        // this.ue.execCommand('inserthtml', value)
-        // 更好的方式：只需要调用focus方法传入的toEnd为true即可解决这个问题
-        this.setContent(value, false)
-        this.setFocus()
-        // 内容初始化完毕
-        this.init = true
-      }
+    value: {
+      handler (newVal, oldVal) {
+        if (this.once && this.init) return
+        let value = newVal ? newVal : oldVal
+        // value !== this.ue.getContent() 如果不加此判断，setContent后会导致光标位置错误，暂时未找到原因
+        if (this.__isReady() && value !== this.ue.getContent()) {
+          this.setContent(value, false)
+          // 内容初始化完毕
+          this.init = true
+        }
+      },
+      immediate: true
     }
   },
   methods: {
@@ -58,20 +61,20 @@ export default {
     initEditor () {
       if (typeof window.UE !== 'undefined') {
         let UE = window.UE
-        this.currentValue = this.value
-        UE.delEditor('vue-simple-ueditor', false)
-        this.ue = UE.getEditor('vue-simple-ueditor', this.options)
+        let initValue = this.value
+        UE.delEditor(this.id, false)
+        this.ue = UE.getEditor(this.id, this.options)
         this.ue.ready(() => {
           this.ready = true
-          if (this.currentValue) {
-            this.setContent(this.currentValue)
+          if (initValue) {
+            this.setContent(initValue)
             this.init = true
           }
           if (this.focus) this.setFocus()
           this.ue.addListener('contentChange', () => {
-            this.currentValue = this.ue.getContent()
-            this.$emit('input', this.currentValue)
-            this.$emit('change', this.currentValue)
+            let value = this.ue.getContent()
+            this.$emit('input', value)
+            this.$emit('change', value)
           })
         })
       }
