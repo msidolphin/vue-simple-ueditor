@@ -17774,7 +17774,7 @@
               for(var i=0,vi,len = videoObjs.length;i<len;i++){
                   vi = videoObjs[i];
                   cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
-                  html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'image'));
+                  html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'video'));
               }
               me.execCommand("inserthtml",html.join(""),true);
               var rng = this.selection.getRange();
@@ -23690,7 +23690,7 @@
                   if(node.getAttr('class') == 'edui-faked-music'){
                       var cssfloat = node.getStyle('float');
                       var align = node.getAttr('align');
-                      html =  creatInsertStr(node.getAttr("src"), node.getAttr('width'), node.getAttr('height'), align, cssfloat,false);
+                      html =  creatInsertStr(node.getAttr("src"), node.getAttr('width'), node.getAttr('height'), align, cssfloat, false);
                       var img = UE.uNode.createElement(html);
                       node.parentNode.replaceChild(img,node);
                   }
@@ -23719,7 +23719,7 @@
               'music':{
                   execCommand:function (cmd, musicObj) {
                       var me = this,
-                          str = creatInsertStr(musicObj.url, musicObj.width || 400, musicObj.height || 95, "none", false);
+                          str = creatInsertStr(musicObj.url, musicObj.width || 400, musicObj.height || 95, "none", true);
                       me.execCommand("inserthtml",str);
                   },
                   queryCommandState:function () {
@@ -24489,7 +24489,8 @@
                   wrapper,
                   btnIframeDoc,
                   btnIframeBody;
-
+              // 需要设置iframe的name值与form的target属性值一样，意思就是把form表单上传文件的刷新转嫁到iframe里去了
+              // btnIframe.name = 'edui_iframe_' + timestrap
               btnIframeDoc = (btnIframe.contentDocument || btnIframe.contentWindow.document);
               btnIframeBody = btnIframeDoc.body;
               wrapper = btnIframeDoc.createElement('div');
@@ -24530,10 +24531,12 @@
 
                   function callback(){
                       try{
-                          var link, json, loader,
-                              body = (iframe.contentDocument || iframe.contentWindow.document).body,
-                              result = body.innerText || body.textContent || '';
-                          json = (new Function("return " + result))();
+                          var link;
+                          var json;
+                          var loader;
+                          var body = (iframe.contentDocument || iframe.contentWindow.document).body;
+                          var result = body.innerText || body.textContent || '';
+                          json = (new Function("return " + result))(); // JSON.parse()....
                           link = me.options.imageUrlPrefix + json.url;
                           if(json.state == 'SUCCESS' && json.url) {
                               loader = me.document.getElementById(loadingId);
@@ -24551,7 +24554,8 @@
                           showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
                       }
                       form.reset();
-                      domUtils.un(iframe, 'load', callback);
+                      // 为何是un？
+                      domUtils.on(iframe, 'load', callback);
                   }
                   function showErrorLoader(title){
                       if(loadingId) {

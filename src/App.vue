@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <editor v-model="value" ref="ueditor" @change="onContentChange"></editor>
-    <editor v-model="value" ref="ueditor" @change="onContentChange"></editor>
+    <editor v-model="value" ref="ueditor" once :options="options" @change="onContentChange"></editor>
   </div>
 </template>
 
@@ -15,7 +14,10 @@ export default {
   },
   data () {
     return {
-      value: ''
+      value: '',
+      options: {
+        serverUrl: '/eshop/editor/file'
+      }
     }
   },
   methods: {
