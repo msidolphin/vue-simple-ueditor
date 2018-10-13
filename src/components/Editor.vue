@@ -55,7 +55,6 @@ export default {
           this.pendingValue = value
           if (this.timer) clearInterval(this.timer)
           this.timer = setInterval(() => {
-            console.log('123213213')
             if (this.__isReady()) {
               this.setContent(this.pendingValue, false)
               this.init = true
