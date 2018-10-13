@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <editor v-model="value" ref="ueditor" once :options="options" @change="onContentChange"></editor>
+    <editor v-model="value" ref="ueditor" :options="options" @change="onContentChange"></editor>
+    <editor v-model="value" ref="ueditor" :options="options" @change="onContentChange"></editor>
   </div>
 </template>
 

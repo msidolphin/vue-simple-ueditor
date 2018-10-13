@@ -41,9 +41,8 @@ export default {
   },
   watch: {
     value: {
-      handler (newVal, oldVal) {
+      handler (value) {
         if (this.once && this.init) return
-        let value = newVal ? newVal : oldVal
         // value !== this.ue.getContent() 如果不加此判断，setContent后会导致光标位置错误，暂时未找到原因
         if (this.__isReady() && value !== this.ue.getContent()) {
           this.setContent(value, false)
