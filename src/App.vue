@@ -29,7 +29,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.value = 'Hello UEditor'
-    }, 500)
+    }, 2000)
   }
 }
 </script>

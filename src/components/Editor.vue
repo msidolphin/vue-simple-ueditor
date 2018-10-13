@@ -36,7 +36,9 @@ export default {
       ue: null,
       ready: false,
       init: false,
-      id: 'vue-simple-ueditor' + Math.ceil(Math.random() * 1000) + '-' + new Date().getTime()
+      id: 'vue-simple-ueditor' + Math.ceil(Math.random() * 1000) + '-' + new Date().getTime(),
+      pendingValue: '',
+      timer: null
     }
   },
   watch: {
@@ -48,6 +50,19 @@ export default {
           this.setContent(value, false)
           // 内容初始化完毕
           this.init = true
+        } else if (!this.init) {
+          // 直到数据被初始化完毕
+          this.pendingValue = value
+          if (this.timer) clearInterval(this.timer)
+          this.timer = setInterval(() => {
+            console.log('123213213')
+            if (this.__isReady()) {
+              this.setContent(this.pendingValue, false)
+              this.init = true
+              clearInterval(this.timer)
+              this.timer = null
+            }
+          }, 20)
         }
       },
       immediate: true
