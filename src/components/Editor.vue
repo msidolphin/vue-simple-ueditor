@@ -45,12 +45,11 @@ export default {
     value: {
       handler (value) {
         if (this.once && this.init) return
-        // value !== this.ue.getContent() 如果不加此判断，setContent后会导致光标位置错误，暂时未找到原因
         if (this.__isReady() && value !== this.ue.getContent()) {
           this.setContent(value, false)
           // 内容初始化完毕
           this.init = true
-        } else if (!this.init) {
+        } else if (!this.init && value) {
           // 直到数据被初始化完毕
           this.pendingValue = value
           if (this.timer) clearInterval(this.timer)
