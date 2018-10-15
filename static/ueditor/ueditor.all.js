@@ -24540,17 +24540,20 @@
                           link = me.options.imageUrlPrefix + json.url;
                           if(json.state == 'SUCCESS' && json.url) {
                               loader = me.document.getElementById(loadingId);
-                              loader.setAttribute('src', link);
-                              loader.setAttribute('_src', link);
-                              loader.setAttribute('title', json.title || '');
-                              loader.setAttribute('alt', json.original || '');
-                              loader.removeAttribute('id');
-                              domUtils.removeClasses(loader, 'loadingclass');
-                              me.fireEvent("contentchange"); // HaoChuan9421
+                              if (loader) {
+                                loader.setAttribute('src', link);
+                                loader.setAttribute('_src', link);
+                                loader.setAttribute('title', json.title || '');
+                                loader.setAttribute('alt', json.original || '');
+                                loader.removeAttribute('id');
+                                domUtils.removeClasses(loader, 'loadingclass');
+                                me.fireEvent("contentchange"); // HaoChuan9421
+                              }
                           } else {
                               showErrorLoader && showErrorLoader(json.state);
                           }
                       }catch(er){
+                          console.log(er)
                           showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
                       }
                       form.reset();
