@@ -1,6 +1,6 @@
 {
   "name": "vue-simple-ueditor",
-  "version": "1.0.6-release",
+  "version": "1.0.6",
   "description": "A Vue.js project",
   "author": "msidolphin <OoMass-EffectoO@hotmail.com>",
   "main": "dist/vue-ueditor.min.js",
