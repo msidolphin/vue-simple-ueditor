@@ -23781,6 +23781,7 @@
                       loader.setAttribute('alt', data.original || '');
                       loader.removeAttribute('id');
                       domUtils.removeClasses(loader, 'loadingclass');
+                      me.fireEvent("contentchange"); // msidolphin 解决上传完毕没有触发contentchange的bug
                   }
               };
           } else {
@@ -23803,7 +23804,7 @@
 
           /* 插入loading的占位符 */
           me.execCommand('inserthtml', loadingHtml);
-
+          debugger
           /* 判断后端配置是否没有加载成功 */
           if (!me.getOpt(filetype + 'ActionName')) {
               errorHandler(me.getLang('autoupload.errorLoadConfig'));
