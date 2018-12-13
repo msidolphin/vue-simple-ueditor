@@ -1,6 +1,6 @@
 {
   "name": "vue-simple-ueditor",
-  "version": "1.0.6",
+  "version": "1.0.7-release",
   "description": "A Vue.js project",
   "author": "msidolphin <OoMass-EffectoO@hotmail.com>",
   "main": "dist/vue-ueditor.min.js",
@@ -9,6 +9,7 @@
     "url": "git+ssh://git@github.com:msidolphin/vue-simple-ueditor.git"
   },
   "private": false,
+  "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
