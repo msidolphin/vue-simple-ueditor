@@ -12,6 +12,8 @@ import 'ue/lang/zh-cn/zh-cn.js'
 export default {
   name: 'ueditor',
   props: {
+    id: {
+    },
     value: {
       type: [String, Number, Boolean],
       default () {
@@ -36,7 +38,6 @@ export default {
       ue: null,
       ready: false,
       init: false,
-      id: 'vue-simple-ueditor' + Math.ceil(Math.random() * 1000) + '-' + new Date().getTime(),
       pendingValue: '',
       timer: null
     }
@@ -44,23 +45,8 @@ export default {
   watch: {
     value: {
       handler (value) {
-        if (this.once && this.init) return
-        if (this.__isReady() && value !== this.ue.getContent()) {
+        if (this.ue && value !== this.ue.getContent()) {
           this.setContent(value, false)
-          // 内容初始化完毕
-          this.init = true
-        } else if (!this.init && value) {
-          // 直到数据被初始化完毕
-          this.pendingValue = value
-          if (this.timer) clearInterval(this.timer)
-          this.timer = setInterval(() => {
-            if (this.__isReady()) {
-              this.setContent(this.pendingValue, false)
-              this.init = true
-              clearInterval(this.timer)
-              this.timer = null
-            }
-          }, 20)
         }
       },
       immediate: true
@@ -79,7 +65,7 @@ export default {
         this.ue.ready(() => {
           this.ready = true
           if (initValue) {
-            this.setContent(initValue)
+            this.setContent(initValue, false)
             this.init = true
           }
           if (this.focus) this.setFocus()
@@ -98,6 +84,7 @@ export default {
     getContent () {
       if (this.__isReady()) return this.ue.getContent()
     },
+
     /**
       * 设置编辑器的内容，可修改编辑器当前的html内容
       * @method setContent
@@ -196,6 +183,7 @@ export default {
     setHeight (height) {
       if (this.__isReady()) this.ue.setHeight(height)
     },
+
     /**
      * 插入内容
      * @method insertHtml

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <editor v-model="value" ref="ueditor" :options="options" @change="onContentChange"></editor>
-    <editor v-model="value" ref="ueditor" :options="options" @change="onContentChange"></editor>
+    <editor v-model="value" id="1" ref="ueditor" :options="options" @change="onContentChange"></editor>
+    <editor v-model="value1" id="2" ref="ueditor" :options="options" @change="onContentChange"></editor>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       value: '',
+      value1: '',
       options: {
         serverUrl: '/eshop/editor/file'
       }
