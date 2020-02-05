@@ -6857,20 +6857,21 @@
               } else {
                   textarea.style.display = ''
               }
-
-              textarea.style.width = me.iframe.offsetWidth + 'px';
-              textarea.style.height = me.iframe.offsetHeight + 'px';
-              textarea.value = me.getContent();
-              textarea.id = me.key;
-              container.innerHTML = '';
-              domUtils.remove(container);
-              var key = me.key;
-              //trace:2004
-              for (var p in me) {
-                  if (me.hasOwnProperty(p)) {
-                      delete this[p];
-                  }
-              }
+              if (me && me.iframe) {
+                    textarea.style.width = me.iframe.offsetWidth + 'px';
+                    textarea.style.height = me.iframe.offsetHeight + 'px';
+                    textarea.value = me.getContent();
+                    textarea.id = me.key;
+                    container.innerHTML = '';
+                    domUtils.remove(container);
+                    var key = me.key;
+                    //trace:2004
+                    for (var p in me) {
+                        if (me.hasOwnProperty(p)) {
+                            delete this[p];
+                        }
+                    }
+                }
               UE.delEditor(key);
           },
 
@@ -29483,10 +29484,10 @@
 
 
       UE.delEditor = function (id) {
-          var editor;
-          if (editor = instances[id]) {
-              editor.key && editor.destroy();
-              delete instances[id]
+          var editor = instances[id];
+          if (editor) {
+            editor.key && editor.destroy();
+            delete instances[id];
           }
       };
 

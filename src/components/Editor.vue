@@ -13,6 +13,7 @@ export default {
   name: 'ueditor',
   props: {
     id: {
+      required: true
     },
     value: {
       type: [String, Number, Boolean],
@@ -45,11 +46,18 @@ export default {
   watch: {
     value: {
       handler (value) {
-        if (this.ue && value !== this.ue.getContent()) {
+        if (this.ue && this.init && value !== this.ue.getContent()) {
           this.setContent(value, false)
+        } else if (!this.init && value) {
+          clearInterval(this.timer)
+          this.timer = setInterval(() => {
+            if (this.__isReady()) {
+              clearInterval(this.timer)
+            }
+            this.setContent(value, false)
+          }, 20)
         }
-      },
-      immediate: true
+      }
     }
   },
   methods: {
@@ -58,23 +66,29 @@ export default {
     },
     initEditor () {
       if (typeof window.UE !== 'undefined') {
-        let UE = window.UE
-        let initValue = this.value
-        UE.delEditor(this.id, false)
-        this.ue = UE.getEditor(this.id, this.options)
-        this.ue.ready(() => {
-          this.ready = true
-          if (initValue) {
-            this.setContent(initValue, false)
-            this.init = true
+        setTimeout(() => {
+          let UE = window.UE
+          let initValue = this.value
+          try {
+            UE.delEditor(this.id, false)
+          } catch (e) {
           }
-          if (this.focus) this.setFocus()
-          this.ue.addListener('contentChange', () => {
-            let value = this.ue.getContent()
-            this.$emit('input', value)
-            this.$emit('change', value)
+          this.ue = UE.getEditor(this.id, this.options)
+          this.ue.ready(() => {
+            this.ready = true
+            if (this.focus) this.setFocus()
+            this.ue.addListener('contentChange', () => {
+              let value = this.ue.getContent()
+              this.$emit('input', value)
+              this.$emit('change', value)
+            })
+            this.init = true
+            if (initValue) {
+              clearInterval(this.timer)
+              this.setContent(initValue, false)
+            }
           })
-        })
+        }, 0)
       }
     },
     /**
@@ -194,7 +208,17 @@ export default {
     }
   },
   mounted () {
-    this.initEditor()
+    this.$nextTick(this.initEditor)
+  },
+  beforeDestroy () {
+    if (typeof window.UE !== 'undefined' && this.ue) {
+      let UE = window.UE
+      try {
+        UE.delEditor(this.id, false)
+      } catch (e) {
+      }
+      this.ue = null
+    }
   }
 }
 </script>
